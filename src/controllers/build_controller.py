@@ -11,7 +11,6 @@ class BuildController:
         self.verbose = verbose
         self.password = password or "tamk-android"
         self.root_dir = os.getcwd()
-        # Seguindo sua definição de cache
         self.cache_dir = os.path.join(self.root_dir, "assets/cache")
 
     def _execute(self, command):
@@ -64,7 +63,6 @@ class BuildController:
             return
 
         # 4. AAPT2 - Linkar Manifest, Recursos e ASSETS
-        # Localização correta dos assets conforme seu projeto
         assets_path = "src/main/assets"
         assets_flag = f"-A {assets_path}" if os.path.exists(assets_path) else ""
 
@@ -76,10 +74,9 @@ class BuildController:
         if not self._execute(link_cmd): return
 
         # 5. KOTLINC - Compilação do Código Fonte
-        # CORREÇÃO CRUCIAL: Apontamos para src/main/kotlin para manter o pacote com.example.myapp
         log("Compilando código Kotlin...", "STEP")
         source_dir = "src/main/kotlin"
-        gen_dir = f"{self.cache_dir}/gen" # Onde o R.java foi gerado
+        gen_dir = f"{self.cache_dir}/gen"
         
         compile_cmd = (f"kotlinc {source_dir} {gen_dir} "
                        f"-cp {self.conf.SDK_PATH} -d {self.cache_dir}/obj")

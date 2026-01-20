@@ -69,7 +69,7 @@ Utilize o script de instalação para configurar o T.A.M.K e tornar o comando `t
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/tamk.git
+git clone https://github.com/Shadw-Developer/tamk.git
 cd tamk
 
 # Execute o instalador

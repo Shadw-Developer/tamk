@@ -1,33 +1,113 @@
 import os
+import sys
+import re
+import subprocess
+from typing import Dict
 from utils.colors import TColor, ask_factory
 from organization.factory import ProjectFactory
 
 class ProjectManager:
     def __init__(self):
-        self.header = f"\n{TColor.CYAN}================================\n      T.A.M.K - Factory\n================================{TColor.RESET}"
+        # Mapeamento de engines compatível com os IDs do menu
+        self.options: Dict[str, str] = {"1": "console", "2": "ui_apk", "3": "webapp"}
 
-    def start_wizard(self):
-        print(self.header)
-        name = ask_factory("Nome do projeto", "MyApp")
+    def get_cols(self) -> int:
+        """Captura largura do terminal via tput para centralização dinâmica."""
+        try:
+            return int(subprocess.check_output(['tput', 'cols'], text=True).strip())
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            return 80
 
-        # Menu atualizado
-        print(f"{TColor.YELLOW}Opções: [1] Console [2] Native Android [3] WebApp (HTML/JS){TColor.RESET}")
-        type_choice = ask_factory("Tipo do projeto", "2")
+    def center_block(self, text: str) -> str:
+        """Centraliza blocos de texto tratando caracteres ANSI invisíveis."""
+        cols = self.get_cols()
+        output = []
+        for line in text.splitlines():
+            # Remove códigos de cores para calcular o comprimento real visível
+            clean_line = re.sub(r'\x1b\[[0-9;]*[mGKF]', '', line)
+            padding = max(0, (cols - len(clean_line)) // 2)
+            output.append(" " * padding + line)
+        return "\n".join(output)
+
+    def show_banner(self):
+        """Exibe o cabeçalho T.A.M.K com filtro metal e centralização."""
+        art = subprocess.getoutput("toilet -f standard -F metal 'T.A.M.K'")
+        print(self.center_block(art))
         
-        # Lógica de seleção
-        p_type = "ui_apk"
-        if type_choice == "1": p_type = "console"
-        elif type_choice == "3": p_type = "webapp"
+        # Divisor e Subtítulo centralizados
+        separator = f"{TColor.CYAN}==========================================={TColor.RESET}"
+        subtitle = f"{TColor.CYAN}Termux Apk Manager Kit • Factory (2026){TColor.RESET}"
+        
+        print(self.center_block(separator))
+        print(self.center_block(subtitle))
+        print(self.center_block(separator))
+        print("")
 
-        version = ask_factory("Versão", "1.0.0")
-        author = ask_factory("Autor", os.getenv("USER", "Developer"))
+    def _clear_lines(self, count: int):
+        """Sobe o cursor e limpa as linhas para manter o CLI estático."""
+        for _ in range(count):
+            sys.stdout.write(f"{TColor.UP}{TColor.CLEAR_LINE}")
+        sys.stdout.flush()
 
+    def start_wizard(self) -> None:
+        """Inicia o fluxo de criação de projeto 2026."""
+        os.system('clear')
+        self.show_banner()
+
+        # 1. Nome do projeto
+        name = ask_factory("Nome do projeto", "MyApp")
+        self._clear_lines(1)
+
+        # --- Menu de Engines (Indentação 2%) ---
+        cols = self.get_cols()
+        indent = " " * int(cols * 0.02)
+
+        print(f"{TColor.BOLD}{TColor.YELLOW}SELECIONE A ENGINE DE DESENVOLVIMENTO:{TColor.RESET}\n")
+        
+        print(f"{TColor.CYAN}[1] Standard Console{TColor.RESET}")
+        print(f"{indent}└─ Automação CLI e scripts backend de alta performance.\n")
+        
+        print(f"{TColor.GREEN}[2] Native Android (UI/APK){TColor.RESET}")
+        print(f"{indent}└─ Interface nativa acelerada e acesso total ao hardware.\n")
+        
+        print(f"{TColor.MAGENTA}[3] Universal WebApp (HTML/JS){TColor.RESET}")
+        print(f"{indent}└─ Estrutura web híbrida compatível com navegadores mobile.\n")
+        
+        choice = ask_factory(f"Engine ID ({TColor.GRAY}default: 2{TColor.RESET})", "2")
+        p_type = self.options.get(choice, "ui_apk")
+        self._clear_lines(11)
+
+        # 2. Configuração de Metadados
+        version = ask_factory("Versão do Release", "1.0.0")
+        self._clear_lines(1)
+        
+        author = ask_factory("ID do Desenvolvedor", os.getenv("USER", "Developer"))
+        self._clear_lines(1)
+
+        # 3. Protocolo de Assinatura (Apenas para APK/WebApp)
         password = "tamk-android"
-        # WebApp também precisa de assinatura, assim como UI_APK
         if p_type in ["ui_apk", "webapp"]:
-            print(f"{TColor.YELLOW}⚠ AVISO: Lembre-se desta senha para o build!{TColor.RESET}")
-            password = ask_factory("Senha da Keystore", "tamk-android")
+            print(f"\n{indent}{TColor.YELLOW}⚠ SECURITY: Esta engine requer assinatura digital.{TColor.RESET}\n")
+            password = ask_factory("Chave da Keystore", "tamk-android")
+            self._clear_lines(2)
 
-        print(f"\n{TColor.GREEN}🚀 Gerando estrutura {p_type.upper()}...{TColor.RESET}")
+        # 4. Deploy do Projeto
+        print(f"🚀 {TColor.GREEN}Provisionando ambiente {p_type.upper()}...{TColor.RESET}")
+        
         if ProjectFactory.create(p_type, name, version, author, password):
-            print(f"\n{TColor.BOLD}✅ Projeto '{name}' criado!{TColor.RESET}")
+            self._clear_lines(1)
+            
+            # Banner de Sucesso Final
+            sucesso_art = subprocess.getoutput("toilet -f standard -F metal 'SUCESSO'")
+            print(self.center_block(sucesso_art))
+            
+            sep_green = f"{TColor.GREEN}==========================================={TColor.RESET}"
+            success_msg = f"{TColor.BOLD}   PROJETO '{name.upper()}' IMPLANTADO!     {TColor.RESET}"
+            
+            print(self.center_block(sep_green))
+            print(self.center_block(success_msg))
+            print(self.center_block(sep_green))
+            print("")
+
+if __name__ == "__main__":
+    ProjectManager().start_wizard()

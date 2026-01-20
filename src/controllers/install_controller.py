@@ -2,7 +2,6 @@ import os
 import subprocess
 from utils.logger import log
 
-
 class InstallController:
     @staticmethod
     def install_apk():
@@ -17,9 +16,8 @@ class InstallController:
         log(f"📦 Solicitando instalação de: {os.path.basename(apk_path)}", "STEP")
 
         try:
-            # termux-open envia o arquivo para o sistema Android decidir o que fazer (Instalar)
-            # O parâmetro --view garante que ele tente abrir o arquivo
-            subprocess.run(f"termux-open {apk_path}", shell=True, check=True)
+            # termux-share: envia o arquivo para o sistema Android decidir o que fazer (Instalar)
+            subprocess.run(f"termux-share {apk_path}", shell=True, check=True)
             log("Instalador do Android iniciado com sucesso.", "SUCCESS")
         except subprocess.CalledProcessError:
             log("Erro ao abrir o instalador. Verifique se o Termux-API está instalado.", "ERROR")

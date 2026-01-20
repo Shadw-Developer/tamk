@@ -1,6 +1,5 @@
 import os
 
-
 class Config:
     def __init__(self):
         self.VERSION = "2026.1.0-alpha"

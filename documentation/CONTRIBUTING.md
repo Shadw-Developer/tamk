@@ -129,7 +129,7 @@ Ao abrir uma Issue para reportar um erro, utilize o seguinte template para facil
 Para configurar seu ambiente de contribuição rapidamente:
 
 ```bash
-git clone https://github.com/Deep-Shadow/tamk.git
+git clone https://github.com/Shadw-Developer/tamk.git
 cd tamk
 pip install -r requirements-dev.txt
 pre-commit install

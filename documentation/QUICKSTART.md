@@ -16,7 +16,7 @@ pkg install -y python openjdk-21 kotlin wget zip apksigner aapt2 termux-tools gi
 Clone o repositório do T.A.M.K e execute o script de instalação:
 
 ```bash
-git clone https://github.com/seu-usuario/tamk.git
+git clone https://github.com/Shadw-Developer/tamk.git
 cd tamk
 bash setup-install.sh
 ```
