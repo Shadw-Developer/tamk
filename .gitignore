@@ -1,0 +1,4 @@
+.si.json
+.env
+__pycache__/
+.vscode

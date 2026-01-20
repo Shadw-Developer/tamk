@@ -1,0 +1,22 @@
+package {{PACKAGE}}
+
+import android.app.Activity
+import android.os.Bundle
+import android.view.View
+import android.widget.Toast
+import android.widget.TextView
+import {{PACKAGE}}.R
+
+class MainActivity : Activity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val title = findViewById<TextView>(R.id.txt_title)
+        title.text = "{{NAME}}"
+    }
+
+    fun onButtonClick(v: View) {
+        Toast.makeText(this, "T.A.M.K Factory: Conectado!", Toast.LENGTH_SHORT).show()
+    }
+}
