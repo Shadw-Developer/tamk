@@ -1,5 +1,6 @@
 <p align="center">
   <b> 📱 T.A.M.K — Termux APK Manager Kit (v2026) </b>
+  <br><br>
   <img src="https://img.shields.io/badge/Version-2026.2.0-blueviolet?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/Platform-Termux/Android-orange?style=for-the-badge" alt="Platform">
   <img src="https://img.shields.io/badge/Language-Python%20%26%20Kotlin-blue?style=for-the-badge" alt="Languages">
