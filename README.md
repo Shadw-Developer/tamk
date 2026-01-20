@@ -1,110 +1,108 @@
 <p align="center">
-  <b>📱 T.A.M.K — Termux APK Manager Kit</b>
-   <br>
-   <br>
-    
-  <img src="https://img.shields.io/badge/Version-2026.1.0-blueviolet?style=for-the-badge" alt="Version">
-  <img src="https://img.shields.io/badge/Platform-Termux-orange?style=for-the-badge" alt="Platform">
+  <b> 📱 T.A.M.K — Termux APK Manager Kit (v2026) </b>
+  <img src="https://img.shields.io/badge/Version-2026.2.0-blueviolet?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Platform-Termux/Android-orange?style=for-the-badge" alt="Platform">
   <img src="https://img.shields.io/badge/Language-Python%20%26%20Kotlin-blue?style=for-the-badge" alt="Languages">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
-  <img src="https://img.shields.io/github/last-commit/SEU_USUARIO/SEU_REPOSITORIO?style=for-the-badge" alt="Last Commit">
 </p>
 
-📝 Descrição
+---
 
-O T.A.M.K (Termux APK Manager Kit) é um framework de automação profissional para desenvolvimento Android nativo diretamente no Termux. Projetado para desenvolvedores que buscam independência de hardware, ele permite criar, compilar, assinar e instalar aplicativos APK utilizando apenas dispositivos móveis.
+## 📝 Descrição
 
-Diferente de soluções convencionais, o T.A.M.K implementa um motor de Scaffolding Profissional com separação clara entre lógica do sistema e templates de código. Isso garante que cada projeto gerado seja um ecossistema autônomo, contendo sua própria SDK e chaves de segurança criptografadas.
+O **T.A.M.K (Termux APK Manager Kit)** é um framework de automação profissional para o desenvolvimento nativo de aplicativos Android diretamente no ambiente Termux. Projetado para desenvolvedores que buscam total independência de hardware, ele permite criar, compilar, assinar e instalar aplicativos APK, incluindo **WebApps Híbridos**, utilizando apenas um dispositivo móvel.
 
-🚀 Diferenciais Estratégicos
+Na sua nova versão, o T.A.M.K introduz o suporte a **WebApps**, permitindo que desenvolvedores web possam encapsular seus projetos (HTML, CSS, JavaScript) em um APK nativo, pronto para ser distribuído e instalado em dispositivos Android. A solução utiliza um `WebView` configurado para performance e compatibilidade, oferecendo uma ponte robusta entre o mundo web e o ecossistema Android.
 
-· Isolamento de SDK (development/): Cada projeto possui sua própria cópia do android.jar oficial do Google, garantindo portabilidade total e prevenindo conflitos com atualizações globais do sistema.
-· Template Engine Desacoplado: Arquitetura modular que separa a lógica Python dos arquivos XML/Kotlin. Modifique a aparência e comportamento dos apps através da pasta assets/templates sem impactar o núcleo do sistema.
-· Pipeline de Build Validado: Verificação antecipada de credenciais (Keystore) antes de iniciar o processo de compilação, otimizando tempo e recursos computacionais.
-· Instalação Nativa: Integração direta com o instalador do Android via termux-open, proporcionando experiência fluida do desenvolvimento à implantação.
+## 🚀 Diferenciais Estratégicos
 
-🏗️ Arquitetura do Projeto
+| Funcionalidade | Descrição |
+| :--- | :--- |
+| **Suporte a WebApps** | Encapsule qualquer aplicação web estática (HTML/CSS/JS) em um APK instalável, com acesso a recursos nativos básicos via JavaScript. |
+| **Isolamento de SDK** | Cada projeto gerado contém sua própria cópia do `android.jar`, garantindo portabilidade e prevenindo conflitos de versão. |
+| **Template Engine** | Arquitetura modular que separa a lógica Python dos templates de código (XML, Kotlin, HTML), permitindo customização completa sem alterar o núcleo do sistema. |
+| **Pipeline de Build Seguro** | Validação de credenciais da Keystore antes do início da compilação, otimizando tempo e evitando falhas em etapas tardias do processo. |
+| **Instalação Nativa** | Integração direta com o instalador de pacotes do Android, proporcionando uma experiência fluida desde o desenvolvimento até o teste. |
 
+## 🏗️ Arquitetura do Projeto
+
+A arquitetura do T.A.M.K foi desenhada para ser modular e extensível. A introdução do suporte a WebApps se integra perfeitamente à estrutura existente, adicionando uma nova opção ao `ProjectFactory`.
+
+```mermaid
+graph TD
+    A[CLI: main.py] --> B{Controllers};
+    B --> C[BuildController];
+    B --> D[ProjectManager];
+    B --> E[Outros: Setup, Install];
+
+    D --> F{ProjectFactory};
+    F --> G[UI/APK Structure];
+    F --> H[Console Structure];
+    F --> I[WebApp Structure];
+
+    subgraph Templates
+        direction LR
+        G --> T1[UI Templates .tmpl];
+        H --> T2[Console Templates .tmpl];
+        I --> T3[WebApp Templates .tmpl];
+    end
+
+    T1 & T2 & T3 --> J((Projeto Gerado));
+    C --> J;
 ```
-tamk/
-├── assets/
-│   └── templates/           # Arquivos .tmpl (XML, Kotlin, Manifest)
-├── src/
-│   ├── config/              # Configurações de ambiente e versão
-│   ├── controllers/         # Motores: Build, Setup, Install e Run
-│   ├── organization/        # Factory e estruturas de projetos
-│   ├── utils/               # Logger e auxiliares de sistema
-│   └── main.py              # Ponto de entrada (CLI)
-└── STRUCTURE.md             # Documentação arquitetural detalhada
-```
 
-⚙️ Instalação e Configuração
+## ⚙️ Instalação e Configuração
 
-Pré-requisitos
+### Pré-requisitos
 
-Certifique-se de ter os pacotes base instalados no Termux:
+Certifique-se de que seu ambiente Termux está atualizado e com os pacotes essenciais instalados:
 
 ```bash
 pkg update && pkg upgrade
-pkg install python openjdk-17 kotlin wget zip apksigner aapt2
-pkg install termux-tools termux-api
+pkg install -y python openjdk-21 kotlin wget zip apksigner aapt2 termux-tools
 ```
 
-Instalação do Kit
+### Instalação do Kit
 
-1. Clone o repositório:
+Utilize o script de instalação para configurar o T.A.M.K e tornar o comando `tamk` globalmente acessível:
 
 ```bash
-https://github.com/Deep-Shadow/tamk.git
+# Clone o repositório
+git clone https://github.com/seu-usuario/tamk.git
 cd tamk
+
+# Execute o instalador
+bash setup-install.sh
 ```
 
-1. Configuração do PATH (opcional):
+Após a instalação, verifique se o comando foi registrado com sucesso:
 
 ```bash
-echo "alias tamk='python3 -B $(pwd)/src/main.py'" >> ~/.bashrc
-source ~/.bashrc
+tamk --version
 ```
 
-1. Verificação da instalação:
+## 📖 Guia de Uso (CLI)
 
-```bash
-python3 src/main.py --version
-```
+Para documentação completa, consulte a pasta `documentation/`.
 
-📖 Guia de Uso (CLI)
+### Guia Rápido
 
-Criando um Novo Projeto
+Consulte [`documentation/QUICKSTART.md`](documentation/QUICKSTART.md) para um guia passo a passo.
 
-```bash
-tamk --create
-```
+### Documentação Completa
 
-Siga o assistente interativo para definir:
+| Documento | Descrição |
+| :--- | :--- |
+| [`ARCHITECTURE.md`](documentation/ARCHITECTURE.md) | Visão geral da arquitetura e fluxo de dados. |
+| [`API_COMPONENTS.md`](documentation/API_COMPONENTS.md) | Referência de classes, módulos e templates. |
+| [`DEV_GUIDE.md`](documentation/DEV_GUIDE.md) | Guia de desenvolvimento, customização e debugging. |
+| [`STRUCTURE.md`](documentation/STRUCTURE.md) | Mapeamento completo da estrutura de diretórios. |
+| [`FAQ.md`](documentation/FAQ.md) | Perguntas frequentes sobre o T.A.M.K e WebApps. |
+| [`CHANGELOG.md`](documentation/CHANGELOG.md) | Histórico de mudanças e novas funcionalidades. |
+| [`CONTRIBUTING.md`](documentation/CONTRIBUTING.md) | Guia de contribuição para desenvolvedores. |
 
-· Nome do aplicativo e pacote
-· Informações do autor
-· Versão e build number
-· Senha da Keystore (criptografada localmente)
+---
 
-O T.A.M.K baixará automaticamente a SDK oficial do Android para dentro do diretório do projeto.
-
-Build e Assinatura
-
-Na pasta do projeto criado, execute:
-
-```bash
-tamk -b -p sua_senha
-```
-
-O sistema validará sua senha e credenciais antes de iniciar a pipeline de compilação.
-
-Instalação Direta
-
-```bash
-tamk -l
-```
-
-Nota: Requer permissões de armazenamento (termux-setup-storage).
-
-Execução Rápida (Build + Install)
+<div align="center">
+  <sub>Feito com ❤️ pela Comunidade de Desenvolvedores Termux.</sub>
+</div>

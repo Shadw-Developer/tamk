@@ -1,0 +1,45 @@
+package {{PACKAGE}}
+
+import android.app.Activity
+import android.os.Bundle
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
+
+class MainActivity : Activity() {
+
+    private lateinit var webView: WebView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Inicializa o WebView
+        webView = WebView(this)
+        
+        // Configurações cruciais
+        webView.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            allowFileAccess = true
+        }
+
+        // WebViewClient: Abre links dentro do próprio app
+        webView.webViewClient = WebViewClient()
+        
+        // WebChromeClient: Permite que o alert() do JS funcione
+        webView.webChromeClient = WebChromeClient()
+
+        setContentView(webView)
+
+        // Carrega o index.html da pasta assets
+        webView.loadUrl("file:///android_asset/index.html")
+    }
+
+    override fun onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+}
