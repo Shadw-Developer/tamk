@@ -14,7 +14,9 @@ class BuildController:
         self.cache_dir = os.path.join(self.root_dir, "assets/cache")
 
     def _execute(self, command):
-        """Executa comandos shell integrados ao logger do T.A.M.K."""
+        """
+          Executa comandos shell integrados ao logger do T.A.M.K.
+        """
         if self.verbose: 
             log(f"Executando: {command}", "DEBUG")
         
@@ -29,7 +31,9 @@ class BuildController:
         return True
 
     def _verify_keystore_password(self, ks_path, password):
-        """Valida a senha antes de iniciar o processo de build."""
+        """
+          Valida a senha antes de iniciar o processo de build.
+        """        
         cmd = f"keytool -list -keystore {ks_path} -storepass {password}"
         res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
         return res.returncode == 0

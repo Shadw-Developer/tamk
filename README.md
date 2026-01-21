@@ -60,7 +60,7 @@ Certifique-se de que seu ambiente Termux está atualizado e com os pacotes essen
 
 ```bash
 pkg update && pkg upgrade
-pkg install -y python openjdk-21 kotlin wget zip apksigner aapt2 termux-tools
+pkg install -y python openjdk-21 kotlin wget zip apksigner aapt2 termux-tools pkg install ncurses-utils toilet
 ```
 
 ### Instalação do Kit

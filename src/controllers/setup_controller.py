@@ -5,7 +5,6 @@ import zipfile
 from utils.logger import log
 from config.tamk_config import Config
 
-
 class SetupController:
     def __init__(self):
         self.conf = Config()

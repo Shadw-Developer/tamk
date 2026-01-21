@@ -3,7 +3,7 @@ import sys
 import os
 
 from config.tamk_config import Config
-from controllers.project_manager import ProjectManager 
+from controllers.project_manager import ProjectManager
 from controllers.run_controller import RunController
 from controllers.build_controller import BuildController
 from controllers.setup_controller import SetupController
@@ -25,7 +25,10 @@ def main():
     group.add_argument("-b", "--build", action="store_true", help="Buildar o projeto atual")
     group.add_argument("--create", action="store_true", help="Inicia o T-Factory para criar projeto")
     group.add_argument("--setup", action="store_true", help="Configura SDK e Keystore global")
-    group.add_argument("-r", "--run", metavar="FILE", help="Executa snippet isolado")
+    
+    # Alterado: nargs='?' torna o argumento opcional, const=True indica que foi chamado sem valor
+    group.add_argument("-r", "--run", nargs='?', const=True, metavar="FILE", help="Executa o projeto atual ou um snippet isolado")
+    
     group.add_argument("-l", "--install", action="store_true", help="Instala o APK gerado no dispositivo")
     group.add_argument("-i", "--ide", action="store_true", help="Abre no SmartIDE")
     group.add_argument("-v", "--version", action="store_true", help="Versão do Kit")
@@ -46,7 +49,9 @@ def main():
             ProjectManager().start_wizard()
 
         case args if args.run:
-            RunController(args.run, verbose=args.verbose).execute_snippet()
+            # Se args.run for True (chamado sem arquivo), passamos None para o RunController
+            file_to_run = None if args.run is True else args.run
+            RunController(file_to_run, verbose=args.verbose).execute_snippet()
 
         case args if args.build:
             BuildController(verbose=args.verbose, password=args.password).build_apk()
