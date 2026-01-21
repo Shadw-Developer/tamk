@@ -105,5 +105,5 @@ Consulte [`documentation/QUICKSTART.md`](documentation/QUICKSTART.md) para um gu
 ---
 
 <div align="center">
-  <sub>Feito com ❤️ pela Comunidade de Desenvolvedores Termux.</sub>
+  <sub>Feito com ❤️ por @mrx_dev</sub>
 </div>
