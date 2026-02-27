@@ -2,7 +2,7 @@ import os
 
 class Config:
     def __init__(self):
-        self.VERSION = "2026.2.0-alpha"
+        self.VERSION = "2026.2.3.0-alpha"
         self.DEV_DIR = os.path.join(os.getcwd(), "development")
         self.SDK_PATH = os.path.join(self.DEV_DIR, "sdk/android.jar")
         self.KEYSTORE = os.path.join(self.DEV_DIR, "secret/debug.keystore")

@@ -4,7 +4,7 @@ from utils.logger import log
 
 
 class UIAppStructure:
-    def setup(self, name, version, author, password):
+    def setup(self, name, version, author, password, web_url=None):
         self.base = os.path.join(os.getcwd(), name)
         self.package = f"com.example.{name.lower().replace('-', '')}"
         # Caminho absoluto para os templates do kit
